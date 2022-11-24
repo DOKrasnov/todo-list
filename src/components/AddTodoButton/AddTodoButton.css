@@ -1,0 +1,16 @@
+.add-todo-button-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.add-todo-button {
+  padding: 5px 15px;
+  border-radius: 16px;
+  background-color: black;
+  color: white;
+  transition: 0.2s;
+}
+.add-todo-button:hover {
+  background-color: white;
+  color: black;
+}
