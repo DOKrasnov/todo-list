@@ -1,4 +1,4 @@
-import { currentYear } from "../../constants/now";
+import { currentYear } from "../../constants/day";
 import "./Footer.css";
 
 export const Footer = () => {

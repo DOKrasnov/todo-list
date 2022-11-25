@@ -1,30 +1,25 @@
 import "./TodoList.css";
-import { now } from "./constants/now";
+
 import { TodoItem } from "./components/TodoItem/TodoItem";
 
 import { useEffect, useState } from "react";
 import { AddTodoForm } from "./components/AddTodoForm/AddTodoForm";
 import { AddTodoButton } from "./components/AddTodoButton/AddTodoButton";
 import firebase from "./firebase";
+import { EditTodoForm } from "./components/EditTodoForm/EditTodoForm";
 
 export const TodoList = () => {
   const [todos, setTodos] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [selectedPost, setSelectedPost] = useState({});
+  const [selectedTodo, setSelectedTodo] = useState({});
   const [showEditForm, setShowEditForm] = useState(false);
 
   const handleShowEditForm = (e) => {
     setShowEditForm(!showEditForm);
-    console.log("ShowEditForm");
   };
 
-  const handleSelectedPost = (selectedPost) => {
-    setSelectedPost(selectedPost);
-    console.log("Selected", selectedPost);
-  };
-
-  const deleteTodo = (todo) => {
-    firebase.firestore().collection("todos").doc(todo.id).delete();
+  const handleSelectedTodo = (selectedTodo) => {
+    setSelectedTodo(selectedTodo);
   };
 
   const addTodoClickHandler = () => {
@@ -33,6 +28,10 @@ export const TodoList = () => {
 
   const hideAddTodoForm = () => {
     setShowAddForm(false);
+  };
+
+  const deleteTodo = (todo) => {
+    firebase.firestore().collection("todos").doc(todo.id).delete();
   };
 
   useEffect(() => {
@@ -60,11 +59,10 @@ export const TodoList = () => {
         text={todo.text}
         time={todo.time}
         complete={todo.complete}
-        intime={todo.intime}
-        // now={now}
+        url={todo.url}
         deleteTodo={() => deleteTodo(todo)}
         handleShowEditForm={() => handleShowEditForm()}
-        handleSelectedPost={() => handleSelectedPost(todo)}
+        handleSelectedTodo={() => handleSelectedTodo(todo)}
       />
     );
   });
@@ -75,6 +73,12 @@ export const TodoList = () => {
         <AddTodoForm hideAddTodoForm={hideAddTodoForm} />
       ) : (
         <AddTodoButton clickHandler={addTodoClickHandler} />
+      )}
+      {showEditForm && (
+        <EditTodoForm
+          selectedTodo={selectedTodo}
+          handleShowEditForm={handleShowEditForm}
+        />
       )}
       {allTodos}
     </main>

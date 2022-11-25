@@ -5,9 +5,46 @@
   margin: 15px;
 }
 
+.todo-container:hover {
+  background-color: rgb(187, 188, 190);
+  border-radius: 16px;
+}
+
 .todo {
-  display: flex;
   flex-basis: 80%;
   justify-content: space-between;
   align-items: center;
+  margin-left: auto;
+}
+.icon:hover {
+  color: white;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.icons {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.icons button {
+  border: none;
+  background-color: transparent;
+}
+
+.icons button:hover {
+  color: white;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.title {
+  font-style: italic;
+  text-decoration: underline;
+}
+
+.time {
+  margin-top: 3px;
+  justify-content: space-around;
+  display: flex;
 }
