@@ -6,24 +6,91 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextField from "@mui/material/TextField";
 import dayjs from "dayjs";
 
+/**
+ * @function AddTodoForm add todo form
+ * @param {Object} props
+ * @param {function} props.hideAddTodoForm hide the add todo form when there was a click outside the form or the add button was clicked
+ */
 export const AddTodoForm = ({ hideAddTodoForm }) => {
-  const [title, setTitle] = useState("");
-  const [text, setText] = useState("");
-  const [time, setTime] = useState(dayjs());
-  const [progress, setProgress] = useState(0);
-  const [url, setUrl] = useState("");
+  const [
+    /** @type {string} Current state. New todo title */
+    title,
+    /** Current state setter
+     * @function setTitle
+     * @param {string} title updated state value
+     * @returns {void}
+     */
+    setTitle,
+  ] = useState("");
 
+  const [
+    /** @type {string} Current state. New todo text */
+    text,
+    /** Current state setter
+     * @function setText
+     * @param {string} text updated state value
+     * @returns {void}
+     */
+    setText,
+  ] = useState("");
+  const [
+    /**
+     * @type {string} Current state.
+     * New todo must be completed before that day
+     * */
+    time,
+    /** Current state setter
+     * @function setTime
+     * @param {string} time updated state value
+     * @returns {void}
+     */
+    setTime,
+  ] = useState(dayjs());
+
+  const [
+    /** @type {string} uploaded in todo file url */
+    url,
+    /** Current state setter
+     * @function setUrl
+     * @param {string} url updated state value
+     * @returns {void}
+     */
+    setUrl,
+  ] = useState("");
+
+  const [
+    /** @type {number} size of the uploaded file in bytes */
+    progress,
+    /** Current state setter
+     * @function setProgress
+     * @param {number} progress updated state value
+     * @returns {void}
+     */
+    setProgress,
+  ] = useState(0);
+
+  /**
+   * @function handleUploadClick get the target file from the input form and pass the file to the uploadFile function
+   * @param {event} e onClick event on upload button
+   */
   const handleUploadClick = (e) => {
     e.preventDefault();
+    /** @type {Object} file to upload */
     const file = e.target[0].files[0];
+    /** @see  uploadFiles */
     uploadFiles(file);
   };
 
+  /**
+   * @function uploadFiles upload file to Firebase API, create URL link and set URL in url param
+   * @param {any} file file to uploading
+   */
   const uploadFiles = (file) => {
     const uploadTask = storage.ref(`files/${file.name}`).put(file);
     uploadTask.on(
       "state_changed",
       (snapshot) => {
+        /** @type {number} size of the uploaded file in bytes */
         const prog = snapshot.totalBytes;
         setProgress(prog);
       },
@@ -34,12 +101,17 @@ export const AddTodoForm = ({ hideAddTodoForm }) => {
           .child(file.name)
           .getDownloadURL()
           .then((url) => {
+            /** @see setUrl */
             setUrl(url);
           });
       }
     );
   };
 
+  /**
+   * @function addNewTodo add new todo to Firebase API
+   * @param {event} e onClick event on addTodoButton
+   */
   const addNewTodo = (e) => {
     e.preventDefault();
 
@@ -57,11 +129,21 @@ export const AddTodoForm = ({ hideAddTodoForm }) => {
     hideAddTodoForm();
   };
 
+  /**
+   * @function handleChangeTitle handles input title form
+   * @param {event} e onChange event
+   */
   const handleChangeTitle = (e) => {
+    /** @see setTitle */
     setTitle(e.target.value);
   };
 
+  /**
+   * @function handleChangeText handles input text form
+   * @param {event} e onChange event
+   */
   const handleChangeText = (e) => {
+    /** @see setText */
     setText(e.target.value);
   };
 

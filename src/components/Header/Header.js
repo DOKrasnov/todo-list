@@ -1,5 +1,7 @@
 import "./Header.css";
-
+/**
+ * @function Header header of the app
+ */
 export const Header = () => {
   return (
     <header className="header">

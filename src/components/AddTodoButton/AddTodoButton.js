@@ -1,4 +1,9 @@
 import "./AddTodoButton.css";
+/**
+ * @function AddTodoButton shows a form for creating a todo on click
+ * @param {Object} props.clickHandler
+ * @param { import('../../TodoList').clickHandler} clickHandler
+ */
 
 export const AddTodoButton = ({ clickHandler }) => {
   return (

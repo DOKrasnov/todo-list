@@ -5,6 +5,18 @@ import AttachmentIcon from "@mui/icons-material/Attachment";
 import dayjs from "dayjs";
 import { today } from "../../constants/day";
 
+/**
+ * @function TodoItem shows todo in Todo list
+ * @param {Object} props props from TodoList
+ * @param {string} props.title todo title
+ * @param {string} props.text todo text
+ * @param {string} props.time todo must be completed before that day
+ * @param {boolean} props.complete true if todo is completed and false if is not
+ * @param {string} props.url file's url in firebase storage API
+ * @param {function} props.deleteTodo delete todo
+ * @param {function} props.handleShowEditForm handles the display of the edit todo form
+ * @param {function} props.handleSelectedTodo set selected todo
+ */
 export const TodoItem = ({
   title,
   text,
@@ -16,11 +28,17 @@ export const TodoItem = ({
   handleShowEditForm,
   handleSelectedTodo,
 }) => {
+  /**
+   * @function editTodo shows edit todo form with selected todo
+   */
   const editTodo = () => {
+    /** @see handleSelectedTodo */
     handleSelectedTodo();
+    /** @see handleShowEditForm */
     handleShowEditForm();
   };
 
+  /** @type {Object} isIntimeStyle object contains color: red if todo was overdue*/
   const isIntimeStyle = {};
   dayjs(today).isSameOrBefore(time) || (isIntimeStyle.color = "red");
 
