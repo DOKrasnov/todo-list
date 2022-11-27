@@ -1,0 +1,8 @@
+.uploaded-files {
+  display: flex;
+}
+
+.uploaded-files img {
+  margin: 0 auto;
+  height: 50px;
+}

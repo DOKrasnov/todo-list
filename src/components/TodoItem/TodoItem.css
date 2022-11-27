@@ -3,10 +3,16 @@
   align-items: center;
   justify-content: space-between;
   margin: 15px;
+  padding-left: 12px;
 }
 
 .todo-container:hover {
   background-color: rgb(187, 188, 190);
+  border-radius: 16px;
+}
+
+.todo-container:active {
+  background-color: rgb(128, 165, 239);
   border-radius: 16px;
 }
 
@@ -15,6 +21,7 @@
   justify-content: space-between;
   align-items: center;
   margin-left: auto;
+  cursor: default;
 }
 .icon:hover {
   color: white;
@@ -34,7 +41,6 @@
 
 .icons button:hover {
   color: white;
-  transition: 0.2s;
   cursor: pointer;
 }
 
@@ -43,8 +49,18 @@
   text-decoration: underline;
 }
 
-.time {
+.title:hover {
+  transform: scale(1.2);
+  transform-origin: left;
+  cursor: pointer;
+}
+
+.complete-before {
   margin-top: 3px;
-  justify-content: space-around;
+  justify-content: space-between;
   display: flex;
+}
+
+.paperclip {
+  color: black;
 }

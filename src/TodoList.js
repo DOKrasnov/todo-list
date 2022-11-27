@@ -104,6 +104,22 @@ export const TodoList = () => {
   };
 
   /**
+   * @function handleActiveTodo set the active todo
+   * @param {number} index
+   */
+  const handleActiveTodo = (index) => {
+    /** @type {array} tempArr temporary variable contains updated current state to avoid mutation */
+    const tempArr = todos.map((todo) => {
+      return (todo = { ...todo, activeTodo: false });
+    });
+    // update active todo from temporary array
+    todos[index].activeTodo
+      ? (tempArr[index].activeTodo = false) // unset active todo
+      : (tempArr[index].activeTodo = true); // set active todo
+    setTodos(tempArr);
+  };
+
+  /**
    * @async
    * @function useEffect rerender todo list on every change
    * @type { import('react').useEffect}
@@ -137,7 +153,7 @@ export const TodoList = () => {
    * @function allTodos renders all todos from todos array
    * @see todos
    */
-  const allTodos = todos.map((todo) => {
+  const allTodos = todos.map((todo, index) => {
     return (
       <TodoItem
         key={todo.id}
@@ -145,7 +161,9 @@ export const TodoList = () => {
         text={todo.text}
         time={todo.time}
         complete={todo.complete}
-        url={todo.url}
+        urlArr={todo.urlArr}
+        activeTodo={todo.activeTodo}
+        handleActiveTodo={() => handleActiveTodo(index)}
         deleteTodo={() => deleteTodo(todo)}
         handleShowEditForm={() => handleShowEditForm()}
         handleSelectedTodo={() => handleSelectedTodo(todo)}

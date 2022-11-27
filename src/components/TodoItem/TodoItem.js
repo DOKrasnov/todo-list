@@ -2,8 +2,10 @@ import "./TodoItem.css";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AttachmentIcon from "@mui/icons-material/Attachment";
+
 import dayjs from "dayjs";
 import { today } from "../../constants/day";
+import Files from "../Files/Files";
 
 /**
  * @function TodoItem shows todo in Todo list
@@ -12,7 +14,7 @@ import { today } from "../../constants/day";
  * @param {string} props.text todo text
  * @param {string} props.time todo must be completed before that day
  * @param {boolean} props.complete true if todo is completed and false if is not
- * @param {string} props.url file's url in firebase storage API
+ * @param {string} props.urlArr file's urlArr in firebase storage API
  * @param {function} props.deleteTodo delete todo
  * @param {function} props.handleShowEditForm handles the display of the edit todo form
  * @param {function} props.handleSelectedTodo set selected todo
@@ -22,8 +24,9 @@ export const TodoItem = ({
   text,
   time,
   complete,
-  url,
-
+  urlArr,
+  activeTodo,
+  handleActiveTodo,
   deleteTodo,
   handleShowEditForm,
   handleSelectedTodo,
@@ -43,22 +46,18 @@ export const TodoItem = ({
   dayjs(today).isSameOrBefore(time) || (isIntimeStyle.color = "red");
 
   return (
-    <div className="todo-container">
+    <div className="todo-container" onClick={handleActiveTodo}>
       <div
         className="todo"
         style={{ textDecoration: complete && "line-through" }}
       >
         <div className="title">{title}</div>
         <div className="text">{text}</div>
-        <div className="time" style={isIntimeStyle}>
-          <div>Complete before</div>
-          <div>{time}</div>
-          <div style={{ display: !url && "none" }}>
-            <a href={url} className="icon">
-              <AttachmentIcon />
-            </a>
-          </div>
+        <div className="complete-before" style={isIntimeStyle}>
+          <div>Complete before {time}</div>
+          <div className="paperclip"> {urlArr && <AttachmentIcon />} </div>
         </div>
+        {activeTodo && <Files urlArr={urlArr} />}
       </div>
       <div className="icons">
         <button onClick={editTodo}>

@@ -5,6 +5,7 @@ import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextField from "@mui/material/TextField";
 import dayjs from "dayjs";
+import Files from "../Files/Files";
 
 /**
  * @function AddTodoForm add todo form
@@ -48,15 +49,15 @@ export const AddTodoForm = ({ hideAddTodoForm }) => {
   ] = useState(dayjs());
 
   const [
-    /** @type {string} uploaded in todo file url */
-    url,
+    /** @type {array} uploaded in todo file urlArr */
+    urlArr,
     /** Current state setter
-     * @function setUrl
-     * @param {string} url updated state value
+     * @function setUrlArr
+     * @param {array} urlArr updated state value
      * @returns {void}
      */
-    setUrl,
-  ] = useState("");
+    setUrlArr,
+  ] = useState([]);
 
   const [
     /** @type {number} size of the uploaded file in bytes */
@@ -82,7 +83,7 @@ export const AddTodoForm = ({ hideAddTodoForm }) => {
   };
 
   /**
-   * @function uploadFiles upload file to Firebase API, create URL link and set URL in url param
+   * @function uploadFiles upload file to Firebase API, create urlArr link and set urlArr in urlArr param
    * @param {any} file file to uploading
    */
   const uploadFiles = (file) => {
@@ -100,9 +101,13 @@ export const AddTodoForm = ({ hideAddTodoForm }) => {
           .ref("files")
           .child(file.name)
           .getDownloadURL()
-          .then((url) => {
-            /** @see setUrl */
-            setUrl(url);
+          .then((newUrl) => {
+            /** @type {array} temp temporary variable contains current state to avoid mutation  */
+            const temp = [...urlArr];
+            temp.push(newUrl);
+
+            /** @see setUrlArr */
+            setUrlArr(temp);
           });
       }
     );
@@ -123,7 +128,7 @@ export const AddTodoForm = ({ hideAddTodoForm }) => {
         text: text,
         time: dayjs(time).format("MM/DD/YYYY"),
         complete: false,
-        url: url,
+        urlArr: urlArr,
       });
 
     hideAddTodoForm();
@@ -195,9 +200,10 @@ export const AddTodoForm = ({ hideAddTodoForm }) => {
           <form onSubmit={handleUploadClick}>
             <input type="file" className="input" />
             <button type="submit">Upload</button>
+            <div>Please select the image</div>
+            <div>Uploaded {progress}bytes</div>
+            <Files urlArr={urlArr} />
           </form>
-
-          <p>Uploaded {progress}bytes</p>
         </div>
       </div>
 

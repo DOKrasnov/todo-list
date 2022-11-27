@@ -5,6 +5,7 @@ import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextField from "@mui/material/TextField";
 import dayjs from "dayjs";
+import Files from "../Files/Files";
 
 /**
  * @function EditTodoForm edit todo form
@@ -12,7 +13,11 @@ import dayjs from "dayjs";
  * @param {Object} props.selectedTodo selected todo in the todo list
  * @param {function} props.handleShowEditForm show or hide edit form
  */
-export const EditTodoForm = ({ selectedTodo, handleShowEditForm }) => {
+export const EditTodoForm = ({
+  selectedTodo,
+  handleShowEditForm,
+  handleUploadClick,
+}) => {
   const [
     /** @type {string} Current state. Selected todo title */
     title,
@@ -60,8 +65,8 @@ export const EditTodoForm = ({ selectedTodo, handleShowEditForm }) => {
     setComplete,
   ] = useState(selectedTodo.complete);
 
-  /** @type {string} selected todo file url */
-  const url = selectedTodo.url;
+  /** @type {string} selected todo file urlArr */
+  const urlArr = selectedTodo.urlArr || "";
 
   /**
    * @function handleChangeTitle handle text in input title form
@@ -92,7 +97,7 @@ export const EditTodoForm = ({ selectedTodo, handleShowEditForm }) => {
 
   /**
    * @function saveTodo upload changed todo in the Firebase API and hide edit todo form
-   * @param {func} e
+   * @param {event} e click save todo button
    */
   const saveTodo = (e) => {
     e.preventDefault();
@@ -106,8 +111,9 @@ export const EditTodoForm = ({ selectedTodo, handleShowEditForm }) => {
         text,
         time: dayjs(time).format("MM/DD/YYYY"),
         complete,
-        url,
+        urlArr,
       });
+
     /** @see handleShowEditForm */
     handleShowEditForm();
   };
@@ -163,9 +169,7 @@ export const EditTodoForm = ({ selectedTodo, handleShowEditForm }) => {
           </div>
         </form>
         <hr />
-        <a href={url} style={{ display: !url && "none" }}>
-          Приложенные файлы
-        </a>
+        <Files urlArr={urlArr} />
       </div>
       <div onClick={handleShowEditForm} className="overlay"></div>
     </>
